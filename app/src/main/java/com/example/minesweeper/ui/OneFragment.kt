@@ -1,6 +1,7 @@
 package com.example.minesweeper.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,4 +25,13 @@ class OneFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_one, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.createCells(10, 10)
+        viewModel.blockSelectedCell(viewModel.cells[0])
+        viewModel.populateCellsWithMines(10, 10, 10)
+        viewModel.unBlockSelectedCell(viewModel.cells[0])
+        viewModel.countMinesNearBy(10, 10)
+    }
 }
