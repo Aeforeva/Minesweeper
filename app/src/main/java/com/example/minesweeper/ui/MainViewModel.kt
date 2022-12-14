@@ -1,5 +1,6 @@
 package com.example.minesweeper.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.minesweeper.model.Cell
 
@@ -25,12 +26,13 @@ class MainViewModel : ViewModel() {
         cell.isMine = true
     }
 
-    fun populateCellsWithMines(x: Int, y: Int, mines: Int) {
+    fun populateCellsWithMines(x: Int, y: Int, minesToSet: Int) {
         val randomRange: IntRange = 0 until x * y
-        var mines = mines
+        var mines = minesToSet
         while (mines > 0) {
-            if (!cells[randomRange.random()].isMine) {
-                cells[randomRange.random()].isMine = true
+            val randomIndex = randomRange.random()
+            if (!cells[randomIndex].isMine) {
+                cells[randomIndex].isMine = true
                 mines--
             }
         }
@@ -82,6 +84,13 @@ class MainViewModel : ViewModel() {
                 val index = cells.indexOfFirst { it.x == cell.x + 1 && it.y == cell.y + 1 }
                 if (cells[index].isMine) cell.minesNearBy++
             }
+        }
+    }
+
+    fun logMinesId() {
+        val mineField = cells.filter { it.isMine }
+        for (mine in mineField) {
+            Log.d("Mine ID", mine.id)
         }
     }
 

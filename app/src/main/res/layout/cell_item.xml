@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="cell"
+            type="com.example.minesweeper.model.Cell" />
+
+    </data>
+
+    <TextView
+        android:id="@+id/cell_text"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_margin="1dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:isMine="@{cell.isMine}"
+        app:minesNearBy="@{cell.minesNearBy}"
+        tools:text="7" />
+</layout>
