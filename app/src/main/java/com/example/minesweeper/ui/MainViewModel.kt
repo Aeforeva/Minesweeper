@@ -3,6 +3,7 @@ package com.example.minesweeper.ui
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.minesweeper.model.Cell
+import kotlin.io.path.fileVisitor
 
 class MainViewModel : ViewModel() {
 
@@ -34,9 +35,9 @@ class MainViewModel : ViewModel() {
 
     private fun createCells(xMax: Int, yMax: Int) {
         cells.clear()
-        var y: Int = 0
+        var y = 0
         while (y < yMax) {
-            var x: Int = 0
+            var x = 0
             while (x < xMax) {
                 cells.add(Cell(x, y))
                 x++
@@ -67,28 +68,28 @@ class MainViewModel : ViewModel() {
 
     private fun getNearByCellsIndexes(cell: Cell, xMax: Int, yMax: Int): List<Int> {
         val nearByCellsIndexes = mutableListOf<Int>()
-        if (cell.x > 0 && cell.y > 0) {
+        if (cell.x > 0 && cell.y > 0) { // ↖ index of this
             nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x - 1 && it.y == cell.y - 1 })
         }
-        if (cell.y > 0) {
+        if (cell.y > 0) { // ↑ index of that
             nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x && it.y == cell.y - 1 })
         }
-        if (cell.x < xMax - 1 && cell.y > 0) {
+        if (cell.x < xMax - 1 && cell.y > 0) { // ↗
             nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x + 1 && it.y == cell.y - 1 })
         }
-        if (cell.x > 0) {
+        if (cell.x > 0) { // ←
             nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x - 1 && it.y == cell.y })
         }
-        if (cell.x < xMax - 1) {
+        if (cell.x < xMax - 1) { // →
             nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x + 1 && it.y == cell.y })
         }
-        if (cell.x > 0 && cell.y < yMax - 1) {
+        if (cell.x > 0 && cell.y < yMax - 1) { // ↙
             nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x - 1 && it.y == cell.y + 1 })
         }
-        if (cell.y < yMax - 1) {
+        if (cell.y < yMax - 1) { // ↓
             nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x && it.y == cell.y + 1 })
         }
-        if (cell.x < xMax - 1 && cell.y < yMax - 1) {
+        if (cell.x < xMax - 1 && cell.y < yMax - 1) { // ↘
             nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x + 1 && it.y == cell.y + 1 })
         }
         return nearByCellsIndexes
@@ -104,7 +105,16 @@ class MainViewModel : ViewModel() {
     }
 
     fun openChainReaction(cell: Cell) {
-
+        cell.isCheck = true
+        cell.isOpen = true
+        val indexes = getNearByCellsIndexes(cell, xMax, yMax)
+        for (i in indexes) {
+            if (!cells[i].isCheck) {
+                cells[i].isCheck = true
+                cells[i].isOpen = true
+                if (cells[i].minesNearBy == 0) openChainReaction(cells[i])
+            }
+        }
     }
 
     fun logMinesId() {

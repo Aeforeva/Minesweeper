@@ -7,5 +7,6 @@ data class Cell(
     var minesNearBy: Int = 0,
     var isMine: Boolean = false,
     var isFlag: Boolean = false,
-    var isOpen: Boolean = false
+    var isOpen: Boolean = false,
+    var isCheck: Boolean = false
 )
