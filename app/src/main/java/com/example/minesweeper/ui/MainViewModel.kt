@@ -7,8 +7,10 @@ import com.example.minesweeper.model.Cell
 class MainViewModel : ViewModel() {
 
     val cells = mutableListOf<Cell>()
-    var gameType = 1
+    var xMax : Int = 10
+    var yMax : Int = 10
     var isGamePlayed = false
+    var isGameLost = false
 
     fun createCells(xMax: Int, yMax: Int) {
         cells.clear()
@@ -42,7 +44,6 @@ class MainViewModel : ViewModel() {
     fun unBlockSelectedCell(cell: Cell) {
         cell.isMine = false
     }
-
 
     private fun getNearByCellsIndexes(cell: Cell, xMax: Int, yMax: Int): List<Int> {
         val nearByCellsIndexes = mutableListOf<Int>()
@@ -82,15 +83,23 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun openChainReaction(cell: Cell) {
+
+    }
+
+    fun endGame() {
+
+    }
+
+    fun isPlayerWin(): Boolean {
+        return cells.indexOfFirst { !it.isMine && !it.isOpen } < 0
+    }
+
     fun logMinesId() {
         val mineField = cells.filter { it.isMine }
         for (mine in mineField) {
             Log.d("Mine ID", mine.id)
         }
-    }
-
-    fun isPlayerWin(): Boolean {
-        return cells.indexOfFirst { !it.isMine && !it.isOpen } < 0
     }
 
     fun countMinesNearByOld(xMax: Int, yMax: Int) {

@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.minesweeper.databinding.CellItemBinding
 import com.example.minesweeper.model.Cell
 
-class CellAdapter(passedData: List<Cell>, private val onClick: (Cell) -> Unit, private val onLongClick: (Cell) -> Unit ) :
+class CellAdapter(
+    passedData: List<Cell>,
+    private val onClick: (Cell) -> Unit,
+    private val onLongClick: (Cell) -> Unit
+) :
     RecyclerView.Adapter<CellAdapter.CellViewHolder>() {
 
     private val data = passedData

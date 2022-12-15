@@ -34,7 +34,6 @@ class OneFragment : Fragment() {
         binding.recycler.layoutManager = GridLayoutManager(context, 10)
 
         viewModel.createCells(10, 10)
-        firstClick()
 
         return binding.root
     }
@@ -45,14 +44,14 @@ class OneFragment : Fragment() {
         oneClickLogic()
     }
 
-    fun firstClick() {
-        viewModel.blockSelectedCell(viewModel.cells[0])
+    fun startGame(cell: Cell) {
+        viewModel.blockSelectedCell(cell)
         viewModel.populateCellsWithMines(10, 10, 10)
-        viewModel.unBlockSelectedCell(viewModel.cells[0])
+        viewModel.unBlockSelectedCell(cell)
         viewModel.countMinesNearBy(10, 10)
     }
 
-    fun oneClickLogic() {
+    private fun oneClickLogic() {
         binding.recycler.adapter = CellAdapter(viewModel.cells, {
             onClick(it)
             oneClickLogic()
@@ -63,13 +62,22 @@ class OneFragment : Fragment() {
     }
 
     private fun onClick(cell: Cell) {
-        if (!cell.isOpen) cell.isOpen = true
-        Log.d("isOpen", "${cell.id} ${cell.isOpen}")
+        if (!viewModel.isGamePlayed) {
+            startGame(cell)
+            viewModel.isGamePlayed = true
+        }
+        if (cell.isMine) {
+            viewModel.endGame()
+            vibratePhone()
+        }
+        if (!cell.isOpen && !cell.isFlag) cell.isOpen = true
+//        if (cell.minesNearBy == 0) viewModel.openChainReaction(cell)
     }
+
 
     private fun onLongClick(cell: Cell) {
         cell.isFlag = !cell.isFlag
-        Log.d("isFlag", "${cell.id} ${cell.isFlag}")
+        vibratePhone()
     }
 }
 
