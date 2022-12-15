@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.minesweeper.adapters.CellAdapter
@@ -29,6 +30,12 @@ class OneFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewModel.createCells(10, 10)
         viewModel.blockSelectedCell(viewModel.cells[0])
         viewModel.populateCellsWithMines(10, 10, 10)
@@ -36,18 +43,18 @@ class OneFragment : Fragment() {
         viewModel.countMinesNearBy(10, 10)
         viewModel.logMinesId()
 
-        val adapter = CellAdapter(viewModel.cells) {
-            Log.d("CELL", it.toString())
-            vibratePhone()
-        }
+        val adapter = CellAdapter(viewModel.cells, { onClick() }, { onLongClick() })
+
         binding.recycler.layoutManager = GridLayoutManager(context, 10)
         binding.recycler.adapter = adapter
-        
-        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun onClick() {
+        Toast.makeText(context, "click", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onLongClick() {
+        Toast.makeText(context, "LONG Click", Toast.LENGTH_SHORT).show()
     }
 
     fun Fragment.vibratePhone() {
