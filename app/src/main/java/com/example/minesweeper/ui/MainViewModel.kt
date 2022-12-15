@@ -8,6 +8,7 @@ class MainViewModel : ViewModel() {
 
     val cells = mutableListOf<Cell>()
     var gameType = 1
+    var isGamePlayed = false
 
     fun createCells(xMax: Int, yMax: Int) {
         cells.clear()
@@ -42,7 +43,57 @@ class MainViewModel : ViewModel() {
         cell.isMine = false
     }
 
+
+    private fun getNearByCellsIndexes(cell: Cell, xMax: Int, yMax: Int): List<Int> {
+        val nearByCellsIndexes = mutableListOf<Int>()
+        if (cell.x > 0 && cell.y > 0) {
+            nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x - 1 && it.y == cell.y - 1 })
+        }
+        if (cell.y > 0) {
+            nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x && it.y == cell.y - 1 })
+        }
+        if (cell.x < xMax - 1 && cell.y > 0) {
+            nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x + 1 && it.y == cell.y - 1 })
+        }
+        if (cell.x > 0) {
+            nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x - 1 && it.y == cell.y })
+        }
+        if (cell.x < xMax - 1) {
+            nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x + 1 && it.y == cell.y })
+        }
+        if (cell.x > 0 && cell.y < yMax - 1) {
+            nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x - 1 && it.y == cell.y + 1 })
+        }
+        if (cell.y < yMax - 1) {
+            nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x && it.y == cell.y + 1 })
+        }
+        if (cell.x < xMax - 1 && cell.y < yMax - 1) {
+            nearByCellsIndexes.add(cells.indexOfFirst { it.x == cell.x + 1 && it.y == cell.y + 1 })
+        }
+        return nearByCellsIndexes
+    }
+
     fun countMinesNearBy(xMax: Int, yMax: Int) {
+        for (cell in cells) {
+            val indexes = getNearByCellsIndexes(cell, xMax, yMax)
+            for (i in indexes) {
+                if (cells[i].isMine) cell.minesNearBy++
+            }
+        }
+    }
+
+    fun logMinesId() {
+        val mineField = cells.filter { it.isMine }
+        for (mine in mineField) {
+            Log.d("Mine ID", mine.id)
+        }
+    }
+
+    fun isPlayerWin(): Boolean {
+        return cells.indexOfFirst { !it.isMine && !it.isOpen } < 0
+    }
+
+    fun countMinesNearByOld(xMax: Int, yMax: Int) {
         for (cell in cells) {
             // ↖
             if (cell.x > 0 && cell.y > 0) {
@@ -85,16 +136,5 @@ class MainViewModel : ViewModel() {
                 if (cells[index].isMine) cell.minesNearBy++
             }
         }
-    }
-
-    fun logMinesId() {
-        val mineField = cells.filter { it.isMine }
-        for (mine in mineField) {
-            Log.d("Mine ID", mine.id)
-        }
-    }
-
-    fun isPlayerWin(): Boolean {
-        return cells.indexOfFirst { !it.isMine && !it.isOpen } < 0
     }
 }
