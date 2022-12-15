@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.util.Log
 import android.view.Gravity
 import android.widget.TextView
+import androidx.core.view.ContentInfoCompat.Flags
 import androidx.databinding.BindingAdapter
 
 @BindingAdapter("logThis")
@@ -16,13 +17,20 @@ fun doLog(textView: TextView, string: String?) {
 //    textView.text = minesNearBy.toString()
 //}
 
-@BindingAdapter("isMine", "minesNearBy")
-fun contentResolve(textView: TextView, isMine: Boolean, minesNearBy: Int) {
-    if (isMine) {
-        textView.text = "\uD83D\uDCA3"
-        textView.text = "\uD83D\uDEA9"
-        textView.setBackgroundColor(Color.LTGRAY)
-    } else {
+@BindingAdapter("minesNearBy", "isMine", "isFlag", "isOpen")
+fun contentResolve(
+    textView: TextView,
+    minesNearBy: Int,
+    isMine: Boolean,
+    isFlag: Boolean,
+    isOpen: Boolean
+) {
+    textView.setBackgroundColor(Color.LTGRAY)
+    if (!isOpen && isFlag) textView.text = "\uD83D\uDEA9" // Flag emoji
+//    if (isOpen && isMine) textView.text = "\uD83D\uDCA3" // Bomb emoji
+    if (isOpen && isMine) textView.text = "\uD83D\uDE02" // Cancer emoji
+    if (isOpen && !isMine) {
+        textView.setBackgroundColor(Color.WHITE)
         textView.text = minesNearBy.toString()
         when (minesNearBy) {
             0 -> textView.text = ""

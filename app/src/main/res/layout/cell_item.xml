@@ -20,7 +20,9 @@
         android:gravity="center"
         android:textSize="22sp"
         android:textStyle="bold"
+        app:isFlag="@{cell.isFlag}"
         app:isMine="@{cell.isMine}"
+        app:isOpen="@{cell.isOpen}"
         app:minesNearBy="@{cell.minesNearBy}"
         tools:text="7" />
 </layout>
