@@ -7,12 +7,32 @@ import com.example.minesweeper.model.Cell
 class MainViewModel : ViewModel() {
 
     val cells = mutableListOf<Cell>()
-    var xMax : Int = 10
-    var yMax : Int = 10
+    var xMax = 10
+    var yMax = 10
+    var minesToSet = 10
     var isGamePlayed = false
     var isGameLost = false
 
-    fun createCells(xMax: Int, yMax: Int) {
+    init {
+        createCells(xMax, yMax)
+    }
+
+    fun startGame(cell: Cell) {
+        blockSelectedCell(cell)
+        populateCellsWithMines(xMax, yMax, minesToSet)
+        unBlockSelectedCell(cell)
+        countMinesNearByForAllCells(xMax, yMax)
+    }
+
+    fun endGame() {
+
+    }
+
+    fun isPlayerWin(): Boolean {
+        return cells.indexOfFirst { !it.isMine && !it.isOpen } < 0
+    }
+
+    private fun createCells(xMax: Int, yMax: Int) {
         cells.clear()
         var y: Int = 0
         while (y < yMax) {
@@ -25,11 +45,11 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun blockSelectedCell(cell: Cell) {
+    private fun blockSelectedCell(cell: Cell) {
         cell.isMine = true
     }
 
-    fun populateCellsWithMines(x: Int, y: Int, minesToSet: Int) {
+    private fun populateCellsWithMines(x: Int, y: Int, minesToSet: Int) {
         val randomRange: IntRange = 0 until x * y
         var mines = minesToSet
         while (mines > 0) {
@@ -41,7 +61,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun unBlockSelectedCell(cell: Cell) {
+    private fun unBlockSelectedCell(cell: Cell) {
         cell.isMine = false
     }
 
@@ -74,7 +94,7 @@ class MainViewModel : ViewModel() {
         return nearByCellsIndexes
     }
 
-    fun countMinesNearBy(xMax: Int, yMax: Int) {
+    private fun countMinesNearByForAllCells(xMax: Int, yMax: Int) {
         for (cell in cells) {
             val indexes = getNearByCellsIndexes(cell, xMax, yMax)
             for (i in indexes) {
@@ -85,14 +105,6 @@ class MainViewModel : ViewModel() {
 
     fun openChainReaction(cell: Cell) {
 
-    }
-
-    fun endGame() {
-
-    }
-
-    fun isPlayerWin(): Boolean {
-        return cells.indexOfFirst { !it.isMine && !it.isOpen } < 0
     }
 
     fun logMinesId() {

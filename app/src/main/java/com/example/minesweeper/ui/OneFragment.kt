@@ -31,9 +31,7 @@ class OneFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        binding.recycler.layoutManager = GridLayoutManager(context, 10)
-
-        viewModel.createCells(10, 10)
+        binding.recycler.layoutManager = GridLayoutManager(context, viewModel.xMax)
 
         return binding.root
     }
@@ -42,13 +40,6 @@ class OneFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         oneClickLogic()
-    }
-
-    fun startGame(cell: Cell) {
-        viewModel.blockSelectedCell(cell)
-        viewModel.populateCellsWithMines(10, 10, 10)
-        viewModel.unBlockSelectedCell(cell)
-        viewModel.countMinesNearBy(10, 10)
     }
 
     private fun oneClickLogic() {
@@ -63,7 +54,7 @@ class OneFragment : Fragment() {
 
     private fun onClick(cell: Cell) {
         if (!viewModel.isGamePlayed) {
-            startGame(cell)
+            viewModel.startGame(cell)
             viewModel.isGamePlayed = true
         }
         if (cell.isMine) {
@@ -71,9 +62,9 @@ class OneFragment : Fragment() {
             vibratePhone()
         }
         if (!cell.isOpen && !cell.isFlag) cell.isOpen = true
-//        if (cell.minesNearBy == 0) viewModel.openChainReaction(cell)
+        if (cell.minesNearBy == 0) viewModel.openChainReaction(cell)
+        if (viewModel.isPlayerWin()) Toast.makeText(context, "Win!", Toast.LENGTH_SHORT).show()
     }
-
 
     private fun onLongClick(cell: Cell) {
         cell.isFlag = !cell.isFlag
