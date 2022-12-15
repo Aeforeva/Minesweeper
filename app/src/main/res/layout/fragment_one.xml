@@ -31,22 +31,23 @@
                 android:id="@+id/mines_left"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_margin="8dp"
                 android:gravity="center"
-                android:textSize="24sp"
+                android:text="000"
+                android:textColor="@color/dark_red"
+                android:textSize="50sp"
                 app:layout_constraintDimensionRatio="3:2"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/recycler"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.3"
-                tools:text="mines left" />
+                app:layout_constraintWidth_percent="0.3" />
 
             <TextView
-                android:text="😎"
-                android:textSize="50dp"
-                android:gravity="center"
                 android:id="@+id/new_game_button"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:gravity="center"
+                android:text="😎"
+                android:backgroundTint="@color/white"
+                android:textSize="50sp"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -57,14 +58,14 @@
                 android:id="@+id/timer"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_margin="8dp"
                 android:gravity="center"
-                android:textSize="24sp"
+                android:text="000"
+                android:textColor="@color/dark_red"
+                android:textSize="50sp"
                 app:layout_constraintDimensionRatio="3:2"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/recycler"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.3"
-                tools:text="timer" />
+                app:layout_constraintWidth_percent="0.3" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
