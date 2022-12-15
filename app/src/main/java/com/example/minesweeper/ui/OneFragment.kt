@@ -61,6 +61,7 @@ class OneFragment : Fragment() {
             viewModel.endGame()
             vibratePhone()
         }
+        if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
         if (!cell.isOpen && !cell.isFlag) cell.isOpen = true
         if (cell.minesNearBy == 0) viewModel.openChainReaction(cell)
         if (viewModel.isPlayerWin()) Toast.makeText(context, "Win!", Toast.LENGTH_SHORT).show()

@@ -117,6 +117,20 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun openNearBy(cell: Cell) {
+        val indexes = getNearByCellsIndexes(cell, xMax, yMax)
+        var flagsNearBy = 0
+        for (i in indexes) {
+            if (cells[i].isFlag) flagsNearBy++
+        }
+        if (cell.minesNearBy == flagsNearBy) {
+            for (i in indexes) {
+                if (!cells[i].isFlag && cells[i].minesNearBy == 0) openChainReaction(cells[i])
+                if (!cells[i].isFlag) cells[i].isOpen = true
+            }
+        }
+    }
+
     fun logMinesId() {
         val mineField = cells.filter { it.isMine }
         for (mine in mineField) {
@@ -168,4 +182,5 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+
 }
