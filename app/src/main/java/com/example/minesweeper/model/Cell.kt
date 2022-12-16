@@ -8,5 +8,6 @@ data class Cell(
     var isMine: Boolean = false,
     var isFlag: Boolean = false,
     var isOpen: Boolean = false,
-    var isCheck: Boolean = false
+    var isCheck: Boolean = false,
+    var isWrongCell: Boolean = false
 )

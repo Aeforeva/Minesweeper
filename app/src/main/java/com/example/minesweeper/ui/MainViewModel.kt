@@ -44,10 +44,11 @@ class MainViewModel : ViewModel() {
             }
             // TODO High Score
         } else {
-            // TODO highlight the wrong cell with mine
+            wrongCell.isWrongCell = true
             gameState.value = GameState.LOSS
             for (cell in cells) {
                 if (cell.isMine && !cell.isFlag) cell.isOpen = true
+                if (cell.isFlag && !cell.isMine) cell.isWrongCell = true
             }
         }
     }
