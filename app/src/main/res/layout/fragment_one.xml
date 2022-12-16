@@ -32,13 +32,14 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:text="000"
+                android:text="@{viewModel.minesLeft.toString()}"
                 android:textColor="@color/dark_red"
                 android:textSize="50sp"
                 app:layout_constraintDimensionRatio="3:2"
                 app:layout_constraintStart_toStartOf="@id/recycler"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.3" />
+                app:layout_constraintWidth_percent="0.3"
+                tools:text="010" />
 
             <TextView
                 android:id="@+id/new_game_button"
@@ -46,13 +47,14 @@
                 android:layout_height="0dp"
                 android:backgroundTint="@color/white"
                 android:gravity="center"
-                android:text="😎"
                 android:textSize="50sp"
+                app:gameState="@{viewModel.gameState}"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.2" />
+                app:layout_constraintWidth_percent="0.2"
+                tools:text="😎" />
 
             <TextView
                 android:id="@+id/timer"

@@ -10,10 +10,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.minesweeper.R
 import com.example.minesweeper.adapters.CellAdapter
 import com.example.minesweeper.databinding.FragmentOneBinding
 import com.example.minesweeper.model.Cell
@@ -39,6 +37,11 @@ class OneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.newGameButton.setOnClickListener {
+            viewModel.setNewGame()
+            oneClickLogic()
+        }
+
         oneClickLogic()
     }
 
@@ -53,23 +56,31 @@ class OneFragment : Fragment() {
     }
 
     private fun onClick(cell: Cell) {
-        if (!viewModel.isGamePlayed) {
+        if (viewModel.gameState.value == GameState.NEW) {
             viewModel.startGame(cell)
-            viewModel.isGamePlayed = true
         }
-        if (cell.isMine) {
-            viewModel.endGame()
-            vibratePhone()
+        if (viewModel.gameState.value == GameState.PLAYING) {
+            if (cell.isMine) {
+                viewModel.endGame(cell)
+                vibratePhone()
+            }
+            if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
+            if (!cell.isOpen && !cell.isFlag) cell.isOpen = true
+            if (!cell.isMine && cell.minesNearBy == 0) viewModel.openChainReaction(cell)
+            if (viewModel.isPlayerWin()) viewModel.endGame(cell)
         }
-        if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
-        if (!cell.isOpen && !cell.isFlag) cell.isOpen = true
-        if (cell.minesNearBy == 0) viewModel.openChainReaction(cell)
-        if (viewModel.isPlayerWin()) Toast.makeText(context, "Win!", Toast.LENGTH_SHORT).show()
     }
 
+
     private fun onLongClick(cell: Cell) {
-        cell.isFlag = !cell.isFlag
-        vibratePhone()
+        if (!cell.isOpen) {
+            if (!cell.isFlag) {
+                viewModel.minesLeft.value = viewModel.minesLeft.value?.dec()
+            } else {
+                viewModel.minesLeft.value = viewModel.minesLeft.value?.inc()
+            }
+            cell.isFlag = !cell.isFlag
+        }
     }
 }
 

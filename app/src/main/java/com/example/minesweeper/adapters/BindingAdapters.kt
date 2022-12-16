@@ -1,21 +1,19 @@
 package com.example.minesweeper.adapters
 
 import android.graphics.Color
-import android.util.Log
-import android.view.Gravity
 import android.widget.TextView
-import androidx.core.view.ContentInfoCompat.Flags
 import androidx.databinding.BindingAdapter
+import com.example.minesweeper.ui.GameState
 
-@BindingAdapter("logThis")
-fun doLog(textView: TextView, string: String?) {
-    Log.d("Binding Adapter", string.toString())
+@BindingAdapter("gameState")
+fun setNewGameButton(textView: TextView, gameState: GameState) {
+    when (gameState) {
+        GameState.WIN -> textView.text = "\uD83D\uDE0E" // 😎
+//        GameState.LOSS -> textView.text = "\uD83E\uDD2F" // 🤯
+        GameState.LOSS -> textView.text = "\uD83D\uDE35" // 😵
+        else -> textView.text = "\uD83D\uDE42" // 🙂
+    }
 }
-
-//@BindingAdapter("minesNearBy")
-//fun contentResolve(textView: TextView, minesNearBy: Int) {
-//    textView.text = minesNearBy.toString()
-//}
 
 @BindingAdapter("minesNearBy", "isMine", "isFlag", "isOpen")
 fun contentResolve(
@@ -26,9 +24,9 @@ fun contentResolve(
     isOpen: Boolean
 ) {
     textView.setBackgroundColor(Color.LTGRAY)
-    if (!isOpen && isFlag) textView.text = "\uD83D\uDEA9" // Flag emoji
-//    if (isOpen && isMine) textView.text = "\uD83D\uDCA3" // Bomb emoji
-    if (isOpen && isMine) textView.text = "\uD83D\uDE02" // Cancer emoji
+    if (!isOpen && isFlag) textView.text = "\uD83D\uDEA9" // 🚩
+//    if (isOpen && isMine) textView.text = "\uD83D\uDCA3" // 💣
+    if (isOpen && isMine) textView.text = "\uD83D\uDE02" // 😂
     if (isOpen && !isMine) {
         textView.setBackgroundColor(Color.WHITE)
         textView.text = minesNearBy.toString()
@@ -45,9 +43,3 @@ fun contentResolve(
         }
     }
 }
-
-//@BindingAdapter("listData")
-//fun bindRecyclerView(recyclerView: RecyclerView, data: List<Dot>?) {
-//    val adapter = recyclerView.adapter as DotAdapter
-//    adapter.submitList(data)
-//}
