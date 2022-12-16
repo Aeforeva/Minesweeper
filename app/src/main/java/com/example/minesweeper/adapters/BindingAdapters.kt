@@ -7,6 +7,7 @@ import com.example.minesweeper.ui.GameState
 
 @BindingAdapter("gameState")
 fun setNewGameButton(textView: TextView, gameState: GameState) {
+    textView.setTextColor(Color.BLACK)
     when (gameState) {
         GameState.WIN -> textView.text = "\uD83D\uDE0E" // 😎
         GameState.LOSS -> textView.text = "\uD83E\uDD2F" // 🤯
@@ -24,10 +25,11 @@ fun contentResolve(
     isOpen: Boolean,
     isWrongCell: Boolean
 ) {
+    textView.setTextColor(Color.BLACK)
     textView.setBackgroundColor(Color.LTGRAY)
     if (!isOpen && isFlag) textView.text = "\uD83D\uDEA9" // 🚩
-//    if (isOpen && isMine) textView.text = "\uD83D\uDCA3" // 💣
-    if (isOpen && isMine) textView.text = "\uD83D\uDE02" // 😂
+    if (isOpen && isMine) textView.text = "\uD83D\uDCA3" // 💣
+//    if (isOpen && isMine) textView.text = "\uD83D\uDE02" // 😂
     if (isOpen && !isMine) {
         textView.setBackgroundColor(Color.WHITE)
         textView.text = minesNearBy.toString()

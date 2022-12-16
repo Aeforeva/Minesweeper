@@ -39,6 +39,7 @@ class MainViewModel : ViewModel() {
     fun endGame(wrongCell: Cell) {
         if (isPlayerWin()) {
             gameState.value = GameState.WIN
+            minesLeft.value = 0
             for (cell in cells) {
                 if (cell.isMine) cell.isFlag = true
             }
