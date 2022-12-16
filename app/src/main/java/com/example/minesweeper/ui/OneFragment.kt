@@ -1,6 +1,9 @@
 package com.example.minesweeper.ui
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
@@ -12,14 +15,38 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.minesweeper.TimerService
 import com.example.minesweeper.adapters.CellAdapter
 import com.example.minesweeper.databinding.FragmentOneBinding
 import com.example.minesweeper.model.Cell
+import kotlin.math.log
 
 class OneFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var binding: FragmentOneBinding
+    private lateinit var serviceIntent: Intent
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        serviceIntent = Intent(context, TimerService::class.java)
+        requireActivity().registerReceiver(updateTime, IntentFilter(TimerService.TIMER_UPDATED))
+    }
+
+    private val updateTime: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+           viewModel.time.value = intent.getIntExtra(TimerService.TIME_EXTRA, 0)
+        }
+    }
+
+    fun starTimer() {
+        serviceIntent.putExtra(TimerService.TIME_EXTRA, viewModel.time.value)
+        requireActivity().startService(serviceIntent)
+    }
+
+    fun stopTimer() {
+        requireActivity().stopService(serviceIntent)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,11 +85,13 @@ class OneFragment : Fragment() {
     private fun onClick(cell: Cell) {
         if (viewModel.gameState.value == GameState.NEW) {
             viewModel.startGame(cell)
+            starTimer()
         }
         if (viewModel.gameState.value == GameState.PLAYING) {
             if (cell.isMine) {
                 viewModel.endGame(cell)
                 vibratePhone()
+                stopTimer()
             }
             if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
             if (!cell.isOpen && !cell.isFlag) cell.isOpen = true

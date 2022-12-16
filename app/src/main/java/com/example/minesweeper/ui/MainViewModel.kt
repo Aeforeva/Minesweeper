@@ -11,7 +11,8 @@ class MainViewModel : ViewModel() {
 
     val cells = mutableListOf<Cell>()
     val gameState = MutableLiveData<GameState>()
-    val minesLeft = MutableLiveData<Int>(0)
+    val minesLeft = MutableLiveData(0)
+    val time = MutableLiveData(0)
 
     // Game parameters
     var xMax = 10
