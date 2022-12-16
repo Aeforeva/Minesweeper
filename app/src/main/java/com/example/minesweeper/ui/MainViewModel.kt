@@ -25,6 +25,7 @@ class MainViewModel : ViewModel() {
 
     fun setNewGame() {
         gameState.value = GameState.NEW
+        time.value = 0
         minesLeft.value = minesToSet
         createCells(xMax, yMax)
     }

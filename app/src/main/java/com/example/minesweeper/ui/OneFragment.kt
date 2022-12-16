@@ -35,17 +35,27 @@ class OneFragment : Fragment() {
 
     private val updateTime: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-           viewModel.time.value = intent.getIntExtra(TimerService.TIME_EXTRA, 0)
+            viewModel.time.value = intent.getIntExtra(TimerService.TIME_EXTRA, 0)
         }
     }
 
-    fun starTimer() {
+    private fun starTimer() {
         serviceIntent.putExtra(TimerService.TIME_EXTRA, viewModel.time.value)
         requireActivity().startService(serviceIntent)
     }
 
-    fun stopTimer() {
+    private fun stopTimer() {
         requireActivity().stopService(serviceIntent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.gameState.value == GameState.PLAYING) starTimer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopTimer()
     }
 
     override fun onCreateView(
@@ -65,6 +75,7 @@ class OneFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.newGameButton.setOnClickListener {
+            stopTimer()
             viewModel.setNewGame()
             oneClickLogic()
         }
@@ -96,7 +107,10 @@ class OneFragment : Fragment() {
             if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
             if (!cell.isOpen && !cell.isFlag) cell.isOpen = true
             if (!cell.isMine && cell.minesNearBy == 0) viewModel.openChainReaction(cell)
-            if (viewModel.isPlayerWin()) viewModel.endGame(cell)
+            if (viewModel.isPlayerWin()) {
+                viewModel.endGame(cell)
+                stopTimer()
+            }
         }
     }
 
