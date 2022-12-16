@@ -1,6 +1,5 @@
 package com.example.minesweeper.ui
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.minesweeper.model.Cell
@@ -21,6 +20,13 @@ class MainViewModel : ViewModel() {
 
     init {
         setNewGame()
+    }
+
+    fun intToThreeIntString(num: Int): String {
+        val c = num % 10
+        val b = (num - c) % 100 / 10
+        val a = (num - 10 * b - c) % 1000 / 100
+        return "$a$b$c"
     }
 
     fun setNewGame() {
@@ -60,7 +66,7 @@ class MainViewModel : ViewModel() {
         return cells.indexOfFirst { !it.isMine && !it.isOpen } < 0
     }
 
-    fun createCells(xMax: Int, yMax: Int) {
+    private fun createCells(xMax: Int, yMax: Int) {
         cells.clear()
         var y = 0
         while (y < yMax) {
