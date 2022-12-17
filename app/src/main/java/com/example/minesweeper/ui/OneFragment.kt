@@ -9,10 +9,8 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.minesweeper.TimerService
@@ -114,6 +112,7 @@ class OneFragment : Fragment() {
                 viewModel.endGame(cell)
                 vibratePhone()
                 stopTimer()
+                Log.d("end game", "LOSS CALL")
             }
             if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
             if (!cell.isOpen && !cell.isFlag) cell.isOpen = true
@@ -121,6 +120,7 @@ class OneFragment : Fragment() {
             if (viewModel.isPlayerWin()) {
                 viewModel.endGame(cell)
                 stopTimer()
+                Log.d("end game", "WIN CALL")
             }
         }
     }
@@ -134,6 +134,7 @@ class OneFragment : Fragment() {
                 viewModel.minesLeft.value = viewModel.minesLeft.value?.inc()
             }
             cell.isFlag = !cell.isFlag
+            vibratePhone()
         }
     }
 }

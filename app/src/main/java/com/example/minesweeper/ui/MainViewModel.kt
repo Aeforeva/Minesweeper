@@ -1,8 +1,11 @@
 package com.example.minesweeper.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.minesweeper.model.Cell
+import kotlinx.coroutines.launch
 
 enum class GameState { NEW, PLAYING, WIN, LOSS }
 
@@ -37,9 +40,9 @@ class MainViewModel : ViewModel() {
                 minesToSet = 40
             }
             3 -> {
-                xMax = 30
-                yMax = 16
-                minesToSet = 99
+                xMax = 16
+                yMax = 24
+                minesToSet = 80
             }
         }
     }
@@ -67,25 +70,28 @@ class MainViewModel : ViewModel() {
     }
 
     fun endGame(wrongCell: Cell) {
-        if (isPlayerWin()) {
-            gameState.value = GameState.WIN
-            minesLeft.value = 0
-            for (cell in cells) {
-                if (cell.isMine) cell.isFlag = true
+        viewModelScope.launch {
+            if (isPlayerWin()) {
+                gameState.value = GameState.WIN
+                minesLeft.value = 0
+                for (cell in cells) {
+                    if (cell.isMine) cell.isFlag = true
+                }
+                // TODO High Score
+            } else {
+                wrongCell.isWrongCell = true
+                gameState.value = GameState.LOSS
+                for (cell in cells) {
+                    if (cell.isMine && !cell.isFlag) cell.isOpen = true
+                    if (cell.isFlag && !cell.isMine) cell.isWrongCell = true
+                }
             }
-            // TODO High Score
-        } else {
-            wrongCell.isWrongCell = true
-            gameState.value = GameState.LOSS
-            for (cell in cells) {
-                if (cell.isMine && !cell.isFlag) cell.isOpen = true
-                if (cell.isFlag && !cell.isMine) cell.isWrongCell = true
-            }
+            Log.d("Game", gameState.value.toString())
         }
     }
 
     fun isPlayerWin(): Boolean {
-        return cells.indexOfFirst { !it.isMine && !it.isOpen && !it.isWrongCell} < 0
+        return cells.indexOfFirst { !it.isMine && !it.isOpen && !it.isWrongCell } < 0
     }
 
     private fun createCells(xMax: Int, yMax: Int) {

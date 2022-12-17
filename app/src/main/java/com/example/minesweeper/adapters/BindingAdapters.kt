@@ -21,7 +21,7 @@ fun setNewGameButton(textView: TextView, gameState: GameState) {
 
 @BindingAdapter("gameType", "id")
 fun setBoldText(button: Button, gameType: Int, id: Int) {
-    if (gameType == id) button.setTextColor(Color.BLACK) else button.setTextColor(Color.WHITE)
+    if (gameType == id) button.setTextColor(Color.WHITE) else button.setTextColor(Color.BLACK)
 }
 
 @BindingAdapter("minesNearBy", "isMine", "isFlag", "isOpen", "isWrongCell")
@@ -46,11 +46,11 @@ fun contentResolve(
             1 -> textView.setTextColor(Color.BLUE)
             2 -> textView.setTextColor(Color.GREEN)
             3 -> textView.setTextColor(Color.RED)
-            4 -> textView.setTextColor(Color.BLUE)
-            5 -> textView.setTextColor(Color.GREEN)
-            6 -> textView.setTextColor(Color.RED)
-            7 -> textView.setTextColor(Color.BLUE)
-            8 -> textView.setTextColor(Color.GREEN)
+            4 -> textView.setTextColor(Color.rgb(0,0,139))
+            5 -> textView.setTextColor(Color.rgb(139,0,0))
+            6 -> textView.setTextColor(Color.rgb(0,139,0))
+            7 -> textView.setTextColor(Color.BLACK)
+            8 -> textView.setTextColor(Color.BLACK)
         }
     }
     if (isWrongCell) textView.setBackgroundColor(Color.RED)
