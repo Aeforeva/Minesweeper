@@ -10,28 +10,30 @@
             type="com.example.minesweeper.model.Cell" />
 
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <TextView
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        android:id="@+id/cell_text"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="1dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:isFlag="@{cell.isFlag}"
-        app:isMine="@{cell.isMine}"
-        app:isOpen="@{cell.isOpen}"
-        app:isWrongCell="@{cell.isWrongCell}"
-        app:minesNearBy="@{cell.minesNearBy}"
-        tools:text="7" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/cell_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:isFlag="@{cell.isFlag}"
+            app:isMine="@{cell.isMine}"
+            app:isOpen="@{cell.isOpen}"
+            app:isWrongCell="@{cell.isWrongCell}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:minesNearBy="@{cell.minesNearBy}"
+            tools:text="7" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

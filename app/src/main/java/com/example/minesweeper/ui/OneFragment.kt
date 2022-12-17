@@ -74,12 +74,23 @@ class OneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.newGameButton.setOnClickListener {
-            stopTimer()
-            viewModel.setNewGame()
-            oneClickLogic()
-        }
+        binding.gameEasy.setOnClickListener { newGame(1) }
 
+        binding.gameMedium.setOnClickListener { newGame(2) }
+
+        binding.gameHard.setOnClickListener { newGame(3) }
+
+        binding.newGameButton.setOnClickListener { newGame(viewModel.gameType.value!!) }
+
+        oneClickLogic()
+    }
+
+    private fun newGame(gameType: Int) {
+        stopTimer()
+        viewModel.gameType.value = gameType
+        viewModel.setGameParameters(gameType)
+        binding.recycler.layoutManager = GridLayoutManager(context, viewModel.xMax)
+        viewModel.setNewGame()
         oneClickLogic()
     }
 
@@ -99,7 +110,7 @@ class OneFragment : Fragment() {
             starTimer()
         }
         if (viewModel.gameState.value == GameState.PLAYING) {
-            if (cell.isMine) {
+            if (cell.isMine && !cell.isFlag) {
                 viewModel.endGame(cell)
                 vibratePhone()
                 stopTimer()

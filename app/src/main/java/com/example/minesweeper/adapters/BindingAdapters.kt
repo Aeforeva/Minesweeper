@@ -1,7 +1,11 @@
 package com.example.minesweeper.adapters
 
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.Typeface
+import android.widget.Button
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.databinding.BindingAdapter
 import com.example.minesweeper.ui.GameState
 
@@ -11,9 +15,13 @@ fun setNewGameButton(textView: TextView, gameState: GameState) {
     when (gameState) {
         GameState.WIN -> textView.text = "\uD83D\uDE0E" // 😎
         GameState.LOSS -> textView.text = "\uD83E\uDD2F" // 🤯
-//        GameState.LOSS -> textView.text = "\uD83D\uDE35" // 😵
         else -> textView.text = "\uD83D\uDE42" // 🙂
     }
+}
+
+@BindingAdapter("gameType", "id")
+fun setBoldText(button: Button, gameType: Int, id: Int) {
+    if (gameType == id) button.setTextColor(Color.BLACK) else button.setTextColor(Color.WHITE)
 }
 
 @BindingAdapter("minesNearBy", "isMine", "isFlag", "isOpen", "isWrongCell")

@@ -12,6 +12,7 @@ class MainViewModel : ViewModel() {
     val gameState = MutableLiveData<GameState>()
     val minesLeft = MutableLiveData(0)
     val time = MutableLiveData(0)
+    val gameType = MutableLiveData(1)
 
     // Game parameters
     var xMax = 10
@@ -19,7 +20,28 @@ class MainViewModel : ViewModel() {
     var minesToSet = 10
 
     init {
+        setGameParameters(gameType.value!!)
         setNewGame()
+    }
+
+    fun setGameParameters(gameType: Int) {
+        when (gameType) {
+            1 -> {
+                xMax = 10
+                yMax = 10
+                minesToSet = 10
+            }
+            2 -> {
+                xMax = 16
+                yMax = 16
+                minesToSet = 40
+            }
+            3 -> {
+                xMax = 30
+                yMax = 16
+                minesToSet = 99
+            }
+        }
     }
 
     fun intToThreeIntString(num: Int): String {
@@ -63,7 +85,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun isPlayerWin(): Boolean {
-        return cells.indexOfFirst { !it.isMine && !it.isOpen } < 0
+        return cells.indexOfFirst { !it.isMine && !it.isOpen && !it.isWrongCell} < 0
     }
 
     private fun createCells(xMax: Int, yMax: Int) {
