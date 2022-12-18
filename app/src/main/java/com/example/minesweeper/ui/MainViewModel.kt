@@ -69,7 +69,7 @@ class MainViewModel : ViewModel() {
         gameState.value = GameState.PLAYING
     }
 
-    fun endGame(wrongCell: Cell) {
+    fun endGame(lastCell: Cell) {
         viewModelScope.launch {
             if (isPlayerWin()) {
                 gameState.value = GameState.WIN
@@ -79,7 +79,7 @@ class MainViewModel : ViewModel() {
                 }
                 // TODO High Score
             } else {
-                wrongCell.isWrongCell = true
+                lastCell.isWrongCell = true
                 gameState.value = GameState.LOSS
                 for (cell in cells) {
                     if (cell.isMine && !cell.isFlag) cell.isOpen = true

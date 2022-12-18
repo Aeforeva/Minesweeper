@@ -112,7 +112,6 @@ class OneFragment : Fragment() {
                 viewModel.endGame(cell)
                 vibratePhone()
                 stopTimer()
-                Log.d("end game", "LOSS CALL")
             }
             if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
             if (!cell.isOpen && !cell.isFlag) cell.isOpen = true
@@ -120,7 +119,6 @@ class OneFragment : Fragment() {
             if (viewModel.isPlayerWin()) {
                 viewModel.endGame(cell)
                 stopTimer()
-                Log.d("end game", "WIN CALL")
             }
         }
     }
