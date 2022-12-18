@@ -4,10 +4,13 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.databinding.BindingAdapter
+import com.example.minesweeper.R
 import com.example.minesweeper.ui.GameState
+import kotlinx.coroutines.channels.ChannelResult.Companion.closed
 
 @BindingAdapter("gameState")
 fun setNewGameButton(textView: TextView, gameState: GameState) {
@@ -26,32 +29,30 @@ fun setBoldText(button: Button, gameType: Int, id: Int) {
 
 @BindingAdapter("minesNearBy", "isMine", "isFlag", "isOpen", "isWrongCell")
 fun contentResolve(
-    textView: TextView,
+    imageView: ImageView,
     minesNearBy: Int,
     isMine: Boolean,
     isFlag: Boolean,
     isOpen: Boolean,
     isWrongCell: Boolean
 ) {
-    textView.setTextColor(Color.BLACK)
-    textView.setBackgroundColor(Color.LTGRAY)
-    if (!isOpen && isFlag) textView.text = "\uD83D\uDEA9" // 🚩
-    if (isOpen && isMine) textView.text = "\uD83D\uDCA3" // 💣
-//    if (isOpen && isMine) textView.text = "\uD83D\uDE02" // 😂
+    imageView.setImageResource(R.drawable.close)
+    if (!isOpen && isFlag) imageView.setImageResource(R.drawable.flag)
+    if (isOpen && isMine) imageView.setImageResource(R.drawable.mine)
+    if (isWrongCell && isFlag) imageView.setImageResource(R.drawable.minewrong)
+    if (isWrongCell && isMine) imageView.setImageResource(R.drawable.minedetonanted)
+
     if (isOpen && !isMine) {
-        textView.setBackgroundColor(Color.WHITE)
-        textView.text = minesNearBy.toString()
         when (minesNearBy) {
-            0 -> textView.text = ""
-            1 -> textView.setTextColor(Color.BLUE)
-            2 -> textView.setTextColor(Color.GREEN)
-            3 -> textView.setTextColor(Color.RED)
-            4 -> textView.setTextColor(Color.rgb(0,0,139))
-            5 -> textView.setTextColor(Color.rgb(139,0,0))
-            6 -> textView.setTextColor(Color.rgb(0,139,0))
-            7 -> textView.setTextColor(Color.BLACK)
-            8 -> textView.setTextColor(Color.BLACK)
+            0 -> imageView.setImageResource(R.drawable.open)
+            1 -> imageView.setImageResource(R.drawable.num_one)
+            2 -> imageView.setImageResource(R.drawable.num_two)
+            3 -> imageView.setImageResource(R.drawable.num_three)
+            4 -> imageView.setImageResource(R.drawable.num_four)
+            5 -> imageView.setImageResource(R.drawable.num_five)
+            6 -> imageView.setImageResource(R.drawable.num_six)
+            7 -> imageView.setImageResource(R.drawable.num_seven)
+            8 -> imageView.setImageResource(R.drawable.num_eight)
         }
     }
-    if (isWrongCell) textView.setBackgroundColor(Color.RED)
 }
