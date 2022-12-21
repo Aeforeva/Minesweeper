@@ -17,15 +17,24 @@ class MainViewModel : ViewModel() {
     val time = MutableLiveData(0)
     val gameType = MutableLiveData(1)
 
+    // High Scores
+    var easyScore = 999
+    var mediumScore = 999
+    var hardScore = 999
+    var easyName = "Developer"
+    var mediumName = "Developer"
+    var hardName = "Developer"
+    var playerName = "Player"
+
     // Game parameters
     var xMax = 10
     var yMax = 10
     var minesToSet = 10
 
-    init {
-        setGameParameters(gameType.value!!)
-        setNewGame()
-    }
+//    init {
+//        setGameParameters(gameType.value!!)
+//        setNewGame()
+//    }
 
     fun setGameParameters(gameType: Int) {
         when (gameType) {
@@ -77,7 +86,6 @@ class MainViewModel : ViewModel() {
                 for (cell in cells) {
                     if (cell.isMine) cell.isFlag = true
                 }
-                // TODO High Score
             } else {
                 lastCell.isWrongCell = true
                 gameState.value = GameState.LOSS
@@ -190,6 +198,15 @@ class MainViewModel : ViewModel() {
                 if (!cells[i].isFlag && cells[i].minesNearBy == 0) openChainReaction(cells[i])
                 if (!cells[i].isFlag) cells[i].isOpen = true
             }
+        }
+    }
+
+    fun isNewHighScore(gameType: Int): Boolean {
+        return when (gameType) {
+            1 -> time.value!! < easyScore
+            2 -> time.value!! < mediumScore
+            3 -> time.value!! < hardScore
+            else -> false
         }
     }
 }

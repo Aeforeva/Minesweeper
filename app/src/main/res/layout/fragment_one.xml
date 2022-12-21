@@ -23,12 +23,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/lt_gray"
-            android:text="easy"
+            android:text="@string/easy"
             app:gameType="@{viewModel.gameType}"
             app:id="@{1}"
             app:layout_constraintBottom_toTopOf="@id/constraintLayout"
             app:layout_constraintEnd_toStartOf="@id/game_medium"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/lt_gray"
-            android:text="medium"
+            android:text="@string/medium"
             app:gameType="@{viewModel.gameType}"
             app:id="@{2}"
             app:layout_constraintBottom_toTopOf="@id/constraintLayout"
@@ -49,12 +49,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/lt_gray"
-            android:text="hard"
+            android:text="@string/hard"
             app:gameType="@{viewModel.gameType}"
             app:id="@{3}"
             app:layout_constraintBottom_toTopOf="@id/constraintLayout"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toStartOf="@+id/high_score"
             app:layout_constraintStart_toEndOf="@id/game_medium"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/high_score"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/lt_gray"
+            android:gravity="center"
+            android:text="@string/high_score"
+            app:layout_constraintBottom_toTopOf="@id/constraintLayout"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/game_hard"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,11 +105,11 @@
                 android:gravity="center"
                 android:textSize="36sp"
                 app:gameState="@{viewModel.gameState}"
+                app:layout_constraintBottom_toBottomOf="@id/mines_left"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/mines_left"
-                app:layout_constraintBottom_toBottomOf="@id/mines_left"
                 tools:text="😎" />
 
             <TextView

@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
 import androidx.databinding.BindingAdapter
 import com.example.minesweeper.R
@@ -24,7 +25,13 @@ fun setNewGameButton(textView: TextView, gameState: GameState) {
 
 @BindingAdapter("gameType", "id")
 fun setBoldText(button: Button, gameType: Int, id: Int) {
-    if (gameType == id) button.setTextColor(Color.WHITE) else button.setTextColor(Color.BLACK)
+    if (gameType == id) button.setTextColor(
+        Color.rgb(
+            125,
+            125,
+            125
+        )
+    ) else button.setTextColor(Color.BLACK)
 }
 
 @BindingAdapter("minesNearBy", "isMine", "isFlag", "isOpen", "isWrongCell")
