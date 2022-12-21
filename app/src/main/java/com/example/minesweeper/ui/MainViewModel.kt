@@ -30,6 +30,7 @@ class MainViewModel : ViewModel() {
     var xMax = 10
     var yMax = 10
     var minesToSet = 10
+    var isFirstStart = true
 
 //    init {
 //        setGameParameters(gameType.value!!)

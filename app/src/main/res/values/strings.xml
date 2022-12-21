@@ -6,4 +6,5 @@
     <string name="medium">medium</string>
     <string name="hard">hard</string>
     <string name="high_score">🏆</string>
+    <string name="sec">%s sec.</string>
 </resources>

@@ -10,5 +10,19 @@
         android:id="@+id/oneFragment"
         android:name="com.example.minesweeper.ui.OneFragment"
         android:label="fragment_one"
-        tools:layout="@layout/fragment_one" />
+        tools:layout="@layout/fragment_one" >
+        <action
+            android:id="@+id/action_oneFragment_to_scoreFragment"
+            app:destination="@id/scoreFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scoreFragment"
+        android:name="com.example.minesweeper.ui.ScoreFragment"
+        android:label="ScoreFragment" >
+        <action
+            android:id="@+id/action_scoreFragment_to_oneFragment"
+            app:destination="@id/oneFragment"
+            app:popUpTo="@id/oneFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
 </navigation>

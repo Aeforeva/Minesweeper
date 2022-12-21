@@ -16,6 +16,7 @@ import com.example.minesweeper.adapters.CellAdapter
 import com.example.minesweeper.databinding.FragmentOneBinding
 import com.example.minesweeper.model.Cell
 import androidx.core.content.edit
+import androidx.navigation.fragment.findNavController
 import com.example.minesweeper.data.*
 
 class OneFragment : Fragment() {
@@ -92,13 +93,16 @@ class OneFragment : Fragment() {
         binding.newGameButton.setOnClickListener { newGame(viewModel.gameType.value!!) }
 
         binding.highScore.setOnClickListener {
-            // TODO score screen
-            Log.d("EASY", "${viewModel.easyName} ${viewModel.easyScore}")
-            Log.d("MEDIUM", "${viewModel.mediumName} ${viewModel.mediumScore}")
-            Log.d("EASY", "${viewModel.hardName} ${viewModel.hardScore}")
+            val action = OneFragmentDirections.actionOneFragmentToScoreFragment()
+            findNavController().navigate(action)
         }
 
-        newGame(viewModel.gameType.value!!)
+        if (viewModel.isFirstStart) {
+            newGame(viewModel.gameType.value!!)
+            viewModel.isFirstStart = false
+        } else {
+            oneClickLogic()
+        }
     }
 
     private fun newGame(gameType: Int) {
@@ -156,6 +160,10 @@ class OneFragment : Fragment() {
         }
     }
 
+    private fun askPlayerNameDialog() {
+        // TODO("Not yet implemented")
+    }
+
     private fun setNewHighScore(gameType: Int) {
         askPlayerNameDialog()
         when (gameType) {
@@ -178,10 +186,6 @@ class OneFragment : Fragment() {
                 sharedPref.edit() { putString(HARD_TOP_PLAYER, viewModel.playerName).apply() }
             }
         }
-    }
-
-    private fun askPlayerNameDialog() {
-        // TODO("Not yet implemented")
     }
 }
 
