@@ -1,37 +1,25 @@
 package com.example.minesweeper.adapters
 
 import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.Typeface
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.annotation.IdRes
 import androidx.databinding.BindingAdapter
 import com.example.minesweeper.R
 import com.example.minesweeper.ui.GameState
-import kotlinx.coroutines.channels.ChannelResult.Companion.closed
 
 @BindingAdapter("gameState")
-fun setNewGameButton(textView: TextView, gameState: GameState) {
-    textView.setTextColor(Color.BLACK)
+fun setNewGameButton(imageView: ImageView, gameState: GameState) {
     when (gameState) {
-        GameState.WIN -> textView.text = "\uD83D\uDE0E" // 😎
-        GameState.LOSS -> textView.text = "\uD83E\uDD2F" // 🤯
-        else -> textView.text = "\uD83D\uDE42" // 🙂
+        GameState.WIN -> imageView.setImageResource(R.drawable.win2)
+        GameState.LOSS -> imageView.setImageResource(R.drawable.loss2)
+        else -> imageView.setImageResource(R.drawable.new2)
     }
 }
 
 @BindingAdapter("gameType", "id")
-fun setBoldText(button: Button, gameType: Int, id: Int) {
-    if (gameType == id) button.setTextColor(
-        Color.rgb(
-            125,
-            125,
-            125
-        )
-    ) else button.setTextColor(Color.BLACK)
+fun setTextColor(button: Button, gameType: Int, id: Int) {
+    if (gameType == id) button.setTextColor(Color.BLACK)
+    else button.setTextColor(Color.rgb(125, 125, 125))
 }
 
 @BindingAdapter("minesNearBy", "isMine", "isFlag", "isOpen", "isWrongCell")

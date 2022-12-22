@@ -91,26 +91,22 @@
                 android:paddingEnd="8dp"
                 android:text="@{viewModel.intToThreeIntString(viewModel.minesLeft)}"
                 android:textColor="@color/red"
-                android:textSize="36sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@id/recycler"
                 app:layout_constraintStart_toStartOf="@id/recycler"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="010" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/new_game_button"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:backgroundTint="@color/white"
-                android:gravity="center"
-                android:textSize="36sp"
                 app:gameState="@{viewModel.gameState}"
                 app:layout_constraintBottom_toBottomOf="@id/mines_left"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/mines_left"
-                tools:text="😎" />
+                app:layout_constraintTop_toTopOf="@id/mines_left" />
 
             <TextView
                 android:id="@+id/timer"
@@ -122,7 +118,7 @@
                 android:paddingEnd="8dp"
                 android:text="@{viewModel.intToThreeIntString(viewModel.time)}"
                 android:textColor="@color/red"
-                android:textSize="36sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@id/recycler"
                 app:layout_constraintEnd_toEndOf="@id/recycler"
                 app:layout_constraintTop_toTopOf="parent"
