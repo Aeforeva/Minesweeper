@@ -1,6 +1,5 @@
 package com.example.minesweeper.ui
 
-import android.app.ProgressDialog.show
 import android.content.*
 import android.os.Build
 import android.os.Bundle
@@ -8,10 +7,8 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
-import android.util.Log
 import android.view.*
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
