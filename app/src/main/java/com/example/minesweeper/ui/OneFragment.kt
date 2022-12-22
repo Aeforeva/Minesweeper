@@ -1,12 +1,18 @@
 package com.example.minesweeper.ui
 
+import android.app.ProgressDialog.show
 import android.content.*
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.text.InputFilter.LengthFilter
+import android.text.InputType
 import android.util.Log
 import android.view.*
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -97,6 +103,7 @@ class OneFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        /** If it is not first start only render current state */
         if (viewModel.isFirstStart) {
             newGame(viewModel.gameType.value!!)
             viewModel.isFirstStart = false
@@ -143,7 +150,7 @@ class OneFragment : Fragment() {
             if (viewModel.isPlayerWin()) {
                 viewModel.endGame(cell)
                 stopTimer()
-                if (viewModel.isNewHighScore(viewModel.gameType.value!!)) setNewHighScore(viewModel.gameType.value!!)
+                if (viewModel.isNewHighScore()) askPlayerNameDialog()
             }
         }
     }
@@ -161,12 +168,27 @@ class OneFragment : Fragment() {
     }
 
     private fun askPlayerNameDialog() {
-        // TODO("Not yet implemented")
+
+        val nameInput = EditText(requireContext())
+        nameInput.inputType = InputType.TYPE_CLASS_TEXT
+        nameInput.gravity = Gravity.CENTER
+        nameInput.filters = arrayOf(LengthFilter(10))
+        nameInput.setText(viewModel.playerName)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("New high score! ${viewModel.time.value} sec.")
+            .setMessage("Enter your name.")
+            .setView(nameInput)
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                viewModel.playerName = nameInput.editableText.toString()
+                setNewHighScore()
+            }
+            .setNegativeButton(android.R.string.no, null)
+            .show()
     }
 
-    private fun setNewHighScore(gameType: Int) {
-        askPlayerNameDialog()
-        when (gameType) {
+    private fun setNewHighScore() {
+        when (viewModel.gameType.value) {
             1 -> {
                 viewModel.easyScore = viewModel.time.value!!
                 viewModel.easyName = viewModel.playerName
@@ -186,6 +208,7 @@ class OneFragment : Fragment() {
                 sharedPref.edit() { putString(HARD_TOP_PLAYER, viewModel.playerName).apply() }
             }
         }
+        sharedPref.edit() { putString(PLAYER_NAME, viewModel.playerName).apply() }
     }
 }
 

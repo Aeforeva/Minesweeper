@@ -202,8 +202,8 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun isNewHighScore(gameType: Int): Boolean {
-        return when (gameType) {
+    fun isNewHighScore(): Boolean {
+        return when (gameType.value) {
             1 -> time.value!! < easyScore
             2 -> time.value!! < mediumScore
             3 -> time.value!! < hardScore

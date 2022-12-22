@@ -2,18 +2,19 @@ package com.example.minesweeper.ui
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.minesweeper.R
 import com.example.minesweeper.data.*
-import com.example.minesweeper.databinding.FragmentOneBinding
 import com.example.minesweeper.databinding.FragmentScoreBinding
+
 
 class ScoreFragment : Fragment() {
 
@@ -41,13 +42,25 @@ class ScoreFragment : Fragment() {
         }
         binding.buttonReset.setOnClickListener {
             confirmResetScores()
-            resetScores()
-            setScoresContent()
         }
     }
 
     private fun confirmResetScores() {
-        // TODO("Not yet implemented")
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete high scores")
+            .setMessage("Are you sure you want to delete high scores?")
+            // Specifying a listener allows you to take an action before dismissing the dialog.
+            // The dialog is automatically dismissed when a dialog button is clicked.
+            .setPositiveButton(android.R.string.yes) { dialog, which ->
+                // Continue with delete operation
+                resetScores()
+                setScoresContent()
+            } // A null listener allows the button to dismiss the dialog and take no further action.
+            .setNegativeButton(android.R.string.no, null)
+//            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setIcon(R.drawable.flag)
+            .show()
     }
 
     private fun resetScores() {
@@ -65,6 +78,7 @@ class ScoreFragment : Fragment() {
         sharedPref.edit() { putString(MEDIUM_TOP_PLAYER, "Developer").apply() }
         sharedPref.edit() { putInt(HARD_HIGH_SCORE, 999).apply() }
         sharedPref.edit() { putString(HARD_TOP_PLAYER, "Developer").apply() }
+        sharedPref.edit() { putString(PLAYER_NAME, "Player").apply() }
     }
 
     private fun setScoresContent() {
