@@ -1,6 +1,7 @@
 package com.example.minesweeper.ui
 
 import android.content.*
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
@@ -20,6 +21,7 @@ import com.example.minesweeper.databinding.FragmentOneBinding
 import com.example.minesweeper.model.Cell
 import androidx.core.content.edit
 import androidx.navigation.fragment.findNavController
+import com.example.minesweeper.R
 import com.example.minesweeper.data.*
 
 class OneFragment : Fragment() {
@@ -147,6 +149,8 @@ class OneFragment : Fragment() {
             if (viewModel.isPlayerWin()) {
                 viewModel.endGame(cell)
                 stopTimer()
+                val coinSound: MediaPlayer = MediaPlayer.create(requireContext(), R.raw.coin)
+                coinSound.start()
                 if (viewModel.isNewHighScore()) askPlayerNameDialog()
             }
         }
@@ -160,27 +164,27 @@ class OneFragment : Fragment() {
                 viewModel.minesLeft.value = viewModel.minesLeft.value?.inc()
             }
             cell.isFlag = !cell.isFlag
-            vibratePhone()
+            val arrowSound: MediaPlayer = MediaPlayer.create(context, R.raw.arrow_whoosh)
+            arrowSound.start()
         }
     }
 
     private fun askPlayerNameDialog() {
-
         val nameInput = EditText(requireContext())
         nameInput.inputType = InputType.TYPE_CLASS_TEXT
         nameInput.gravity = Gravity.CENTER
-        nameInput.filters = arrayOf(LengthFilter(10))
+        nameInput.filters = arrayOf(LengthFilter(13))
         nameInput.setText(viewModel.playerName)
 
         AlertDialog.Builder(requireContext())
-            .setTitle("New high score! ${viewModel.time.value} sec.")
-            .setMessage("Enter your name.")
+            .setTitle(getString(R.string.new_high_score, viewModel.time.value))
+            .setMessage(R.string.enter_name)
             .setView(nameInput)
-            .setPositiveButton(android.R.string.yes) { _, _ ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 viewModel.playerName = nameInput.editableText.toString()
                 setNewHighScore()
             }
-            .setNegativeButton(android.R.string.no, null)
+            .setNegativeButton(android.R.string.cancel, null)
             .show()
     }
 

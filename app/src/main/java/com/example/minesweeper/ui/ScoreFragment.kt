@@ -15,7 +15,6 @@ import com.example.minesweeper.R
 import com.example.minesweeper.data.*
 import com.example.minesweeper.databinding.FragmentScoreBinding
 
-
 class ScoreFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
@@ -25,8 +24,7 @@ class ScoreFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         binding = FragmentScoreBinding.inflate(inflater, container, false)
         sharedPref = requireActivity().getPreferences(AppCompatActivity.MODE_PRIVATE)
         setScoresContent()
@@ -37,8 +35,7 @@ class ScoreFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonBack.setOnClickListener {
-            val action = ScoreFragmentDirections.actionScoreFragmentToOneFragment()
-            findNavController().navigate(action)
+            findNavController().navigate(R.id.action_scoreFragment_to_oneFragment)
         }
         binding.buttonReset.setOnClickListener {
             confirmResetScores()
@@ -48,14 +45,13 @@ class ScoreFragment : Fragment() {
     private fun confirmResetScores() {
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Delete high scores")
-            .setMessage("Are you sure you want to delete high scores?")
-            .setPositiveButton(android.R.string.yes) { _, _ ->
+            .setTitle(R.string.reset_high_scores)
+            .setMessage(R.string.confirm_question)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 resetScores()
                 setScoresContent()
             }
-            .setNegativeButton(android.R.string.no, null)
-//            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setNegativeButton(android.R.string.cancel, null)
             .setIcon(R.drawable.flag)
             .show()
     }
@@ -79,11 +75,11 @@ class ScoreFragment : Fragment() {
     }
 
     private fun setScoresContent() {
-        binding.easyScore.text = "${viewModel.easyScore} sec."
+        binding.easyScore.text = getString(R.string.add_sec, viewModel.easyScore)
         binding.easyName.text = viewModel.easyName
-        binding.mediumScore.text = "${viewModel.mediumScore} sec."
+        binding.mediumScore.text = getString(R.string.add_sec, viewModel.mediumScore)
         binding.mediumName.text = viewModel.mediumName
-        binding.hardScore.text = "${viewModel.hardScore} sec."
+        binding.hardScore.text = getString(R.string.add_sec, viewModel.hardScore)
         binding.hardName.text = viewModel.hardName
     }
 }

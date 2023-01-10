@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">Minesweeper</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="high_scores">High scores</string>
     <string name="easy">easy</string>
     <string name="medium">medium</string>
     <string name="hard">hard</string>
     <string name="high_score">🏆</string>
-    <string name="sec">%s sec.</string>
+    <string name="enter_name">Enter your name:</string>
+    <string name="new_high_score">New high score: %d sec!</string>
+    <string name="add_sec">%d sec.</string>
+    <string name="reset_high_scores">Reset high scores.</string>
+    <string name="confirm_question">Are you sure you want to reset high scores?</string>
+    <string name="back">back</string>
+    <string name="reset">reset</string>
 </resources>

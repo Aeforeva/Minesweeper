@@ -9,8 +9,8 @@
     <fragment
         android:id="@+id/oneFragment"
         android:name="com.example.minesweeper.ui.OneFragment"
-        android:label="fragment_one"
-        tools:layout="@layout/fragment_one" >
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_one">
         <action
             android:id="@+id/action_oneFragment_to_scoreFragment"
             app:destination="@id/scoreFragment" />
@@ -18,7 +18,8 @@
     <fragment
         android:id="@+id/scoreFragment"
         android:name="com.example.minesweeper.ui.ScoreFragment"
-        android:label="ScoreFragment" >
+        android:label="@string/high_scores"
+        tools:layout="@layout/fragment_score">
         <action
             android:id="@+id/action_scoreFragment_to_oneFragment"
             app:destination="@id/oneFragment"
