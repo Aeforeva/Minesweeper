@@ -1,4 +1,4 @@
-package com.example.minesweeper
+package io.github.aeforeva.minesweeper
 
 import android.app.Service
 import android.content.Intent

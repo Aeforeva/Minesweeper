@@ -12,9 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Minesweeper"
-        tools:targetApi="31">
+        tools:targetApi="33">
         <activity
-            android:name=".MainActivity"
+            android:name="io.github.aeforeva.minesweeper.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -28,7 +28,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <service android:name=".TimerService" />
+        <service android:name="io.github.aeforeva.minesweeper.TimerService" />
     </application>
 
 </manifest>

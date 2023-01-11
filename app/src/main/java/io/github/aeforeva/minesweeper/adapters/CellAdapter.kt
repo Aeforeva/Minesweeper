@@ -1,10 +1,10 @@
-package com.example.minesweeper.adapters
+package io.github.aeforeva.minesweeper.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.minesweeper.databinding.CellItemBinding
-import com.example.minesweeper.model.Cell
+import io.github.aeforeva.minesweeper.databinding.CellItemBinding
+import io.github.aeforeva.minesweeper.model.Cell
 
 class CellAdapter(
     passedData: List<Cell>,

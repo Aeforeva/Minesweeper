@@ -12,4 +12,5 @@
     <string name="confirm_question">Are you sure you want to reset high scores?</string>
     <string name="back">back</string>
     <string name="reset">reset</string>
+    <string name="new_game_button_desc">New game button</string>
 </resources>

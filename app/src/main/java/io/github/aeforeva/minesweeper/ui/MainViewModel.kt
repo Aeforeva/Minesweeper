@@ -1,10 +1,10 @@
-package com.example.minesweeper.ui
+package io.github.aeforeva.minesweeper.ui
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.minesweeper.model.Cell
+import io.github.aeforeva.minesweeper.model.Cell
 import kotlinx.coroutines.launch
 
 enum class GameState { NEW, PLAYING, WIN, LOSS }

@@ -1,4 +1,4 @@
-package com.example.minesweeper.ui
+package io.github.aeforeva.minesweeper.ui
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -11,9 +11,9 @@ import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.minesweeper.R
-import com.example.minesweeper.data.*
-import com.example.minesweeper.databinding.FragmentScoreBinding
+import io.github.aeforeva.minesweeper.R
+import io.github.aeforeva.minesweeper.data.*
+import io.github.aeforeva.minesweeper.databinding.FragmentScoreBinding
 
 class ScoreFragment : Fragment() {
 

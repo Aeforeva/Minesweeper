@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    namespace 'com.example.minesweeper'
+    namespace 'io.github.aeforeva.minesweeper'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.minesweeper"
-        minSdk 21
+        applicationId "io.github.aeforeva.minesweeper"
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"

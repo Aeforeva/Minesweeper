@@ -1,4 +1,4 @@
-package com.example.minesweeper.data
+package io.github.aeforeva.minesweeper.data
 
 const val GAME_TYPE = "game_type"
 const val PLAYER_NAME = "player_name"

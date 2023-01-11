@@ -1,11 +1,9 @@
-package com.example.minesweeper.ui
+package io.github.aeforeva.minesweeper.ui
 
 import android.content.*
+import android.content.Context.VIBRATOR_SERVICE
 import android.media.MediaPlayer
-import android.os.Build
-import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
+import android.os.*
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
 import android.view.*
@@ -15,14 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.minesweeper.TimerService
-import com.example.minesweeper.adapters.CellAdapter
-import com.example.minesweeper.databinding.FragmentOneBinding
-import com.example.minesweeper.model.Cell
+import io.github.aeforeva.minesweeper.TimerService
+import io.github.aeforeva.minesweeper.adapters.CellAdapter
+import io.github.aeforeva.minesweeper.model.Cell
 import androidx.core.content.edit
 import androidx.navigation.fragment.findNavController
-import com.example.minesweeper.R
-import com.example.minesweeper.data.*
+import io.github.aeforeva.minesweeper.model.CustomGridLayoutManager
+import io.github.aeforeva.minesweeper.R
+import io.github.aeforeva.minesweeper.data.*
+import io.github.aeforeva.minesweeper.databinding.FragmentOneBinding
 
 class OneFragment : Fragment() {
 
@@ -114,7 +113,7 @@ class OneFragment : Fragment() {
         stopTimer()
         viewModel.gameType.value = gameType
         viewModel.setGameParameters(gameType)
-        binding.recycler.layoutManager = GridLayoutManager(context, viewModel.xMax)
+        binding.recycler.layoutManager = CustomGridLayoutManager(context, viewModel.xMax)
         viewModel.setNewGame()
         oneClickLogic()
 
@@ -213,10 +212,22 @@ class OneFragment : Fragment() {
 }
 
 fun Fragment.vibratePhone() {
-    val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-    if (Build.VERSION.SDK_INT >= 26) {
-        vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+    val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 11
+        val vibratorManager =
+            context?.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+        vibratorManager.defaultVibrator
     } else {
-        vibrator.vibrate(200)
+        @Suppress("DEPRECATION")
+        context?.getSystemService(VIBRATOR_SERVICE) as Vibrator
     }
+    vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
 }
+
+//fun Fragment.vibratePhone() {
+//    val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+//    if (Build.VERSION.SDK_INT >= 26) {
+//    vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+//    } else {
+//        vibrator.vibrate(200)
+//    }
+//}

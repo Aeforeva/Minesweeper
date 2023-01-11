@@ -1,4 +1,4 @@
-package com.example.minesweeper
+package io.github.aeforeva.minesweeper
 
 import android.os.Build
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.minesweeper.ui.MainViewModel
+import io.github.aeforeva.minesweeper.ui.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,12 +27,14 @@ class MainActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     window.decorView.windowInsetsController?.hide(WindowInsets.Type.statusBars())
                 } else {
+                    @Suppress("DEPRECATION")
                     window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 }
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     window.decorView.windowInsetsController?.show(WindowInsets.Type.statusBars())
                 } else {
+                    @Suppress("DEPRECATION")
                     window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 }
             }

@@ -1,4 +1,4 @@
-package com.example.minesweeper.model
+package io.github.aeforeva.minesweeper.model
 
 data class Cell(
     val x: Int,
