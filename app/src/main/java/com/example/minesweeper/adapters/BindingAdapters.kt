@@ -10,9 +10,9 @@ import com.example.minesweeper.ui.GameState
 @BindingAdapter("gameState")
 fun setNewGameButton(imageView: ImageView, gameState: GameState) {
     when (gameState) {
-        GameState.WIN -> imageView.setImageResource(R.drawable.win2)
-        GameState.LOSS -> imageView.setImageResource(R.drawable.loss2)
-        else -> imageView.setImageResource(R.drawable.new2)
+        GameState.WIN -> imageView.setImageResource(R.drawable.game_win)
+        GameState.LOSS -> imageView.setImageResource(R.drawable.game_loss)
+        else -> imageView.setImageResource(R.drawable.game_new)
     }
 }
 
@@ -32,10 +32,10 @@ fun contentResolve(
     isWrongCell: Boolean
 ) {
     imageView.setImageResource(R.drawable.close)
-    if (!isOpen && isFlag) imageView.setImageResource(R.drawable.flag)
+    if (!isOpen && isFlag) imageView.setImageResource(R.drawable.flag_small)
     if (isOpen && isMine) imageView.setImageResource(R.drawable.mine)
-    if (isWrongCell && isFlag) imageView.setImageResource(R.drawable.minewrong)
-    if (isWrongCell && isMine) imageView.setImageResource(R.drawable.minedetonanted)
+    if (isWrongCell && isFlag) imageView.setImageResource(R.drawable.mine_wrong)
+    if (isWrongCell && isMine) imageView.setImageResource(R.drawable.explosion)
 
     if (isOpen && !isMine) {
         when (minesNearBy) {

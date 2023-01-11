@@ -52,7 +52,7 @@ class ScoreFragment : Fragment() {
                 setScoresContent()
             }
             .setNegativeButton(android.R.string.cancel, null)
-            .setIcon(R.drawable.flag)
+            .setIcon(android.R.drawable.presence_busy)
             .show()
     }
 

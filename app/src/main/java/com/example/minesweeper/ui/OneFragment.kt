@@ -76,7 +76,7 @@ class OneFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentOneBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = this
@@ -98,8 +98,7 @@ class OneFragment : Fragment() {
         binding.newGameButton.setOnClickListener { newGame(viewModel.gameType.value!!) }
 
         binding.highScore.setOnClickListener {
-            val action = OneFragmentDirections.actionOneFragmentToScoreFragment()
-            findNavController().navigate(action)
+            findNavController().navigate(R.id.action_oneFragment_to_scoreFragment)
         }
 
         /** If it is not first start only render current state */
