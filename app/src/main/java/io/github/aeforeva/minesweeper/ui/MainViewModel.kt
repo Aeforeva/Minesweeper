@@ -45,8 +45,8 @@ class MainViewModel : ViewModel() {
                 minesToSet = 10
             }
             2 -> {
-                xMax = 16
-                yMax = 16
+                xMax = 14
+                yMax = 18
                 minesToSet = 40
             }
             3 -> {
