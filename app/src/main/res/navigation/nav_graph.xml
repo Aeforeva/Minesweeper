@@ -24,6 +24,6 @@
             android:id="@+id/action_scoreFragment_to_oneFragment"
             app:destination="@id/oneFragment"
             app:popUpTo="@id/oneFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
