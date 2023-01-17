@@ -19,7 +19,7 @@ class CellAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(cell: Cell) {
             binding.cell = cell
-            binding.executePendingBindings()
+            binding.executePendingBindings() // Prevent to see empty black background inside recycler for a few moments.
         }
     }
 
@@ -32,8 +32,8 @@ class CellAdapter(
         val item = data[position]
         holder.bind(item)
         holder.itemView.setOnClickListener {
+//            notifyItemChanged(position, item) // Somehow it works, but i don't trust it.
             onClick(item)
-            notifyItemChanged(position, item)
         }
         holder.itemView.setOnLongClickListener() {
             onLongClick(item)

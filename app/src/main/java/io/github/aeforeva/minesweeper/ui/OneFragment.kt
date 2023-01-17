@@ -123,15 +123,19 @@ class OneFragment : Fragment() {
     private fun oneClickLogic() {
         binding.recycler.adapter = CellAdapter(viewModel.cells, {
             onClick(it)
-            for (i in viewModel.itemToNotify) {
-                binding.recycler.adapter?.notifyItemChanged(i, it)
-            }
-            viewModel.itemToNotify.clear()
+            reRender(it)
 //            oneClickLogic()
         }, {
             onLongClick(it)
 //            oneClickLogic()
         })
+    }
+
+    private fun reRender(cell: Cell) {
+        for (i in viewModel.itemToNotify) {
+            binding.recycler.adapter?.notifyItemChanged(i, cell)
+        }
+        viewModel.itemToNotify.clear()
     }
 
     private fun onClick(cell: Cell) {
@@ -144,11 +148,17 @@ class OneFragment : Fragment() {
                 viewModel.endGame(cell)
                 vibratePhone()
                 stopTimer()
+                return
             }
             if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
-            if (!cell.isOpen && !cell.isFlag) cell.isOpen =
-                true // I don't use itemToNotify here, for singe cell notify in CellAdapter
+            // Fast render single cell
+            if (!cell.isOpen && !cell.isFlag) {
+                cell.isOpen = true
+                binding.recycler.adapter?.notifyItemChanged(cell.id, cell)
+            }
             if (!cell.isMine && cell.minesNearBy == 0) viewModel.openChainReaction(cell)
+            // Call reRender() here to improve UI performance, I guess isPlayerWin() check might take a bit time
+            reRender(cell)
             if (viewModel.isPlayerWin()) {
                 viewModel.endGame(cell)
                 stopTimer()

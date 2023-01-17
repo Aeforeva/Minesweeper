@@ -88,21 +88,21 @@ class MainViewModel : ViewModel() {
             for (cell in cells) {
                 if (cell.isMine) {
                     cell.isFlag = true
-                    itemToNotify.add(cells.indexOf(cell))
+                    itemToNotify.add(cell.id)
                 }
             }
         } else {
             lastCell.isWrongCell = true
-            itemToNotify.add(cells.indexOf(lastCell))
+            itemToNotify.add(lastCell.id)
             gameState.value = GameState.LOSS
             for (cell in cells) {
                 if (cell.isMine && !cell.isFlag) {
                     cell.isOpen = true
-                    itemToNotify.add(cells.indexOf(cell))
+                    itemToNotify.add(cell.id)
                 }
                 if (cell.isFlag && !cell.isMine) {
                     cell.isWrongCell = true
-                    itemToNotify.add(cells.indexOf(cell))
+                    itemToNotify.add(cell.id)
                 }
             }
         }
@@ -116,11 +116,13 @@ class MainViewModel : ViewModel() {
 
     private fun createCells(xMax: Int, yMax: Int) {
         cells.clear()
+        var id = 0
         var y = 0
         while (y < yMax) {
             var x = 0
             while (x < xMax) {
-                cells.add(Cell(x, y))
+                cells.add(Cell(x, y, id))
+                id++
                 x++
             }
             y++
@@ -188,7 +190,7 @@ class MainViewModel : ViewModel() {
     fun openChainReaction(cell: Cell) {
         cell.isCheck = true
         cell.isOpen = true
-        itemToNotify.add(cells.indexOf(cell))
+        itemToNotify.add(cell.id)
         val indexes = getNearByCellsIndexes(cell, xMax, yMax)
         for (i in indexes) {
             if (!cells[i].isCheck) {
