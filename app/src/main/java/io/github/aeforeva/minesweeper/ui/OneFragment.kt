@@ -126,7 +126,7 @@ class OneFragment : Fragment() {
             oneClickLogic()
         }, {
             onLongClick(it)
-            oneClickLogic()
+//            oneClickLogic()
         })
     }
 
