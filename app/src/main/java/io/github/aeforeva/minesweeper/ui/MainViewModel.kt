@@ -16,6 +16,7 @@ class MainViewModel : ViewModel() {
     val minesLeft = MutableLiveData(0)
     val time = MutableLiveData(0)
     val gameType = MutableLiveData(1)
+    val itemToNotify = mutableSetOf<Int>()
 
     // High Scores
     var easyScore = 999
@@ -80,23 +81,33 @@ class MainViewModel : ViewModel() {
     }
 
     fun endGame(lastCell: Cell) {
-        viewModelScope.launch {
-            if (isPlayerWin()) {
-                gameState.value = GameState.WIN
-                minesLeft.value = 0
-                for (cell in cells) {
-                    if (cell.isMine) cell.isFlag = true
-                }
-            } else {
-                lastCell.isWrongCell = true
-                gameState.value = GameState.LOSS
-                for (cell in cells) {
-                    if (cell.isMine && !cell.isFlag) cell.isOpen = true
-                    if (cell.isFlag && !cell.isMine) cell.isWrongCell = true
+//        viewModelScope.launch {
+        if (isPlayerWin()) {
+            gameState.value = GameState.WIN
+            minesLeft.value = 0
+            for (cell in cells) {
+                if (cell.isMine) {
+                    cell.isFlag = true
+                    itemToNotify.add(cells.indexOf(cell))
                 }
             }
-            Log.d("Game", gameState.value.toString())
+        } else {
+            lastCell.isWrongCell = true
+            itemToNotify.add(cells.indexOf(lastCell))
+            gameState.value = GameState.LOSS
+            for (cell in cells) {
+                if (cell.isMine && !cell.isFlag) {
+                    cell.isOpen = true
+                    itemToNotify.add(cells.indexOf(cell))
+                }
+                if (cell.isFlag && !cell.isMine) {
+                    cell.isWrongCell = true
+                    itemToNotify.add(cells.indexOf(cell))
+                }
+            }
         }
+        Log.d("Game", gameState.value.toString())
+//        }
     }
 
     fun isPlayerWin(): Boolean {
@@ -177,11 +188,13 @@ class MainViewModel : ViewModel() {
     fun openChainReaction(cell: Cell) {
         cell.isCheck = true
         cell.isOpen = true
+        itemToNotify.add(cells.indexOf(cell))
         val indexes = getNearByCellsIndexes(cell, xMax, yMax)
         for (i in indexes) {
             if (!cells[i].isCheck) {
                 cells[i].isCheck = true
                 cells[i].isOpen = true
+                itemToNotify.add(i)
                 if (cells[i].minesNearBy == 0) openChainReaction(cells[i])
             }
         }
@@ -193,11 +206,14 @@ class MainViewModel : ViewModel() {
         for (i in indexes) {
             if (cells[i].isFlag) flagsNearBy++
         }
-        if (cell.minesNearBy == flagsNearBy) {
+        if (cell.minesNearBy == flagsNearBy) { // or <= but in original minesweeper it's ==
             for (i in indexes) {
                 if (!cells[i].isFlag && cells[i].isMine) endGame(cells[i])
                 if (!cells[i].isFlag && cells[i].minesNearBy == 0) openChainReaction(cells[i])
-                if (!cells[i].isFlag) cells[i].isOpen = true
+                if (!cells[i].isFlag) {
+                    cells[i].isOpen = true
+                    itemToNotify.add(i)
+                }
             }
         }
     }

@@ -33,6 +33,7 @@ class CellAdapter(
         holder.bind(item)
         holder.itemView.setOnClickListener {
             onClick(item)
+            notifyItemChanged(position, item)
         }
         holder.itemView.setOnLongClickListener() {
             onLongClick(item)

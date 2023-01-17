@@ -123,7 +123,11 @@ class OneFragment : Fragment() {
     private fun oneClickLogic() {
         binding.recycler.adapter = CellAdapter(viewModel.cells, {
             onClick(it)
-            oneClickLogic()
+            for (i in viewModel.itemToNotify) {
+                binding.recycler.adapter?.notifyItemChanged(i, it)
+            }
+            viewModel.itemToNotify.clear()
+//            oneClickLogic()
         }, {
             onLongClick(it)
 //            oneClickLogic()
@@ -142,7 +146,8 @@ class OneFragment : Fragment() {
                 stopTimer()
             }
             if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
-            if (!cell.isOpen && !cell.isFlag) cell.isOpen = true
+            if (!cell.isOpen && !cell.isFlag) cell.isOpen =
+                true // I don't use itemToNotify here, for singe cell notify in CellAdapter
             if (!cell.isMine && cell.minesNearBy == 0) viewModel.openChainReaction(cell)
             if (viewModel.isPlayerWin()) {
                 viewModel.endGame(cell)
