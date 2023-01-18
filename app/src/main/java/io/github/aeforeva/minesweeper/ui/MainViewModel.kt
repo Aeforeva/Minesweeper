@@ -210,11 +210,14 @@ class MainViewModel : ViewModel() {
         }
         if (cell.minesNearBy == flagsNearBy) { // or <= but in original minesweeper it's ==
             for (i in indexes) {
-                if (!cells[i].isFlag && cells[i].isMine) endGame(cells[i])
-                if (!cells[i].isFlag && cells[i].minesNearBy == 0) openChainReaction(cells[i])
                 if (!cells[i].isFlag) {
+                    // Open single cell
                     cells[i].isOpen = true
                     itemToNotify.add(i)
+                    // Mine = game loss
+                    if (cells[i].isMine) endGame(cells[i])
+                    // Mass open when possible
+                    if (cells[i].minesNearBy == 0) openChainReaction(cells[i])
                 }
             }
         }

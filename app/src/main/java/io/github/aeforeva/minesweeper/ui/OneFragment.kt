@@ -22,6 +22,7 @@ import io.github.aeforeva.minesweeper.model.CustomGridLayoutManager
 import io.github.aeforeva.minesweeper.R
 import io.github.aeforeva.minesweeper.data.*
 import io.github.aeforeva.minesweeper.databinding.FragmentOneBinding
+import kotlinx.coroutines.Dispatchers.Main
 
 class OneFragment : Fragment() {
 
@@ -105,7 +106,7 @@ class OneFragment : Fragment() {
             newGame(viewModel.gameType.value!!)
             viewModel.isFirstStart = false
         } else {
-            oneClickLogic()
+            setAdapter()
         }
     }
 
@@ -115,19 +116,19 @@ class OneFragment : Fragment() {
         viewModel.setGameParameters(gameType)
         binding.recycler.layoutManager = CustomGridLayoutManager(context, viewModel.xMax)
         viewModel.setNewGame()
-        oneClickLogic()
+        setAdapter()
 
         sharedPref.edit() { putInt(GAME_TYPE, gameType).apply() }
     }
 
-    private fun oneClickLogic() {
+    private fun setAdapter() {
         binding.recycler.adapter = CellAdapter(viewModel.cells, {
             onClick(it)
             reRender(it)
-//            oneClickLogic()
+//            setAdapter()
         }, {
             onLongClick(it)
-//            oneClickLogic()
+//            setAdapter()
         })
     }
 
@@ -138,27 +139,37 @@ class OneFragment : Fragment() {
         viewModel.itemToNotify.clear()
     }
 
+    /** GAME LOGIC */
     private fun onClick(cell: Cell) {
-        if (viewModel.gameState.value == GameState.NEW) {
+        // First click logic (mine safe)
+        if (viewModel.gameState.value == GameState.NEW && !cell.isFlag) {
             viewModel.startGame(cell)
             starTimer()
         }
-        if (viewModel.gameState.value == GameState.PLAYING) {
-            if (cell.isMine && !cell.isFlag) {
+        // Main game logic
+        if (viewModel.gameState.value == GameState.PLAYING && !cell.isFlag) {
+            // Open single cell
+            cell.isOpen = true
+            binding.recycler.adapter?.notifyItemChanged(cell.id, cell)
+            // Mine = game loss
+            if (cell.isMine) {
                 viewModel.endGame(cell)
                 vibratePhone()
                 stopTimer()
                 return
             }
+            // Fast open nearby cells when mines marked, if wrong = game loss
             if (cell.isOpen && cell.minesNearBy > 0) viewModel.openNearBy(cell)
-            // Fast render single cell
-            if (!cell.isOpen && !cell.isFlag) {
-                cell.isOpen = true
-                binding.recycler.adapter?.notifyItemChanged(cell.id, cell)
+            if (viewModel.gameState.value == GameState.LOSS) {
+                vibratePhone()
+                stopTimer()
+                return
             }
-            if (!cell.isMine && cell.minesNearBy == 0) viewModel.openChainReaction(cell)
-            // Call reRender() here to improve UI performance, I guess isPlayerWin() check might take a bit time
+            // Mass open when possible
+            if (cell.minesNearBy == 0) viewModel.openChainReaction(cell)
+            // Call reRender() here to try improve UI performance, I guess isPlayerWin() check might take a bit time
             reRender(cell)
+            // Check win condition
             if (viewModel.isPlayerWin()) {
                 viewModel.endGame(cell)
                 stopTimer()
