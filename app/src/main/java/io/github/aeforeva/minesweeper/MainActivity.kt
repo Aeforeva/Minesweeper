@@ -1,7 +1,9 @@
 package io.github.aeforeva.minesweeper
 
+import android.app.ActionBar.LayoutParams
 import android.os.Build
 import android.os.Bundle
+import android.view.Window
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -20,26 +22,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportActionBar?.hide()
-
-        viewModel.gameType.observe(this) {
-            if (it == 3) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    window.decorView.windowInsetsController?.hide(WindowInsets.Type.statusBars())
-                } else {
-                    @Suppress("DEPRECATION")
-                    window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                }
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    window.decorView.windowInsetsController?.show(WindowInsets.Type.statusBars())
-                } else {
-                    @Suppress("DEPRECATION")
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                }
-            }
-        }
-
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -49,5 +31,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        supportActionBar?.hide()
+
+        viewModel.gameType.observe(this) {
+            if (it == 3) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    window.decorView.windowInsetsController?.hide(WindowInsets.Type.statusBars())
+                    window.decorView.windowInsetsController?.hide(WindowInsets.Type.systemBars())
+                } else {
+                    @Suppress("DEPRECATION")
+                    window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                }
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    window.decorView.windowInsetsController?.show(WindowInsets.Type.statusBars())
+                    window.decorView.windowInsetsController?.show(WindowInsets.Type.systemBars())
+                } else {
+                    @Suppress("DEPRECATION")
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                }
+            }
+        }
     }
 }

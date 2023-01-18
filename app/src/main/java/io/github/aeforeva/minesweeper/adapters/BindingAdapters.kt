@@ -37,12 +37,14 @@ fun contentResolve(
     isOpen: Boolean,
     isWrongCell: Boolean
 ) {
-    imageView.setImageResource(R.drawable.close)
-    if (!isOpen && isFlag) imageView.setImageResource(R.drawable.flag_small)
-    if (isOpen && isMine) imageView.setImageResource(R.drawable.mine)
-
-    if (isOpen && !isMine) {
-        when (minesNearBy) {
+    if (isWrongCell) {
+        if (isMine) imageView.setImageResource(R.drawable.explosion)
+        else imageView.setImageResource(R.drawable.mine_wrong)
+    } else {
+        if (isFlag) imageView.setImageResource(R.drawable.flag_small)
+        else if (!isOpen) imageView.setImageResource(R.drawable.close)
+        else if (isMine) imageView.setImageResource(R.drawable.mine)
+        else when (minesNearBy) {
             0 -> imageView.setImageResource(R.drawable.open)
             1 -> imageView.setImageResource(R.drawable.num_one)
             2 -> imageView.setImageResource(R.drawable.num_two)
@@ -54,7 +56,4 @@ fun contentResolve(
             8 -> imageView.setImageResource(R.drawable.num_eight)
         }
     }
-
-    if (isWrongCell && !isMine) imageView.setImageResource(R.drawable.mine_wrong)
-    if (isWrongCell && isMine) imageView.setImageResource(R.drawable.explosion)
 }

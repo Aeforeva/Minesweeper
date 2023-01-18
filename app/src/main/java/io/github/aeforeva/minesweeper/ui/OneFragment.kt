@@ -181,7 +181,7 @@ class OneFragment : Fragment() {
     }
 
     private fun onLongClick(cell: Cell) {
-        if (!cell.isOpen) {
+        if (viewModel.gameState.value == GameState.PLAYING && !cell.isOpen) {
             if (!cell.isFlag) {
                 viewModel.minesLeft.value = viewModel.minesLeft.value?.dec()
             } else {
